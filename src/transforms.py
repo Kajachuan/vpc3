@@ -5,7 +5,9 @@ import numpy as np
 from torchvision.transforms import v2 as transforms
 
 class MorphologicalOpeningTransform(nn.Module):
-    """Aplicar apertura morfológica a imágenes"""
+    """
+    Transformación para aplicar apertura morfológica a imágenes
+    """
     
     def __init__(self, kernel_size):
         super().__init__()
