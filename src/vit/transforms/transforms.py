@@ -2,6 +2,7 @@ import cv2
 import torch
 import torch.nn as nn
 import numpy as np
+from transformers import AutoImageProcessor
 from torchvision.transforms import v2 as transforms
 
 class MorphologicalOpeningTransform(nn.Module):
@@ -28,17 +29,27 @@ class MorphologicalOpeningTransform(nn.Module):
         
         return torch.stack(morphs)
 
-def get_transform(config):
+def get_transforms(checkpoint: str, config: dict):
     """Obtener composición de transformaciones"""
+
+    processor = AutoImageProcessor.from_pretrained(checkpoint)
     
-    return transforms.Compose([
-        MorphologicalOpeningTransform(config.MORPH_KERNEL_SIZE),
-        transforms.RandomRotation(degrees=config.ROTATION_DEGREES),
-        transforms.CenterCrop(size=(config.IMG_HEIGHT, config.IMG_WIDTH)),
-        transforms.RandomAffine(degrees=0, translate=config.TRANSLATE),
-        transforms.ColorJitter(contrast=config.CONTRAST),
+    train_tf = transforms.Compose([
+        MorphologicalOpeningTransform(tuple(config["morph_kernel_size"])),
+        transforms.RandomRotation(degrees=config["rotation_degrees"]),
+        transforms.CenterCrop(size=(config["img_height"], config["img_width"])),
+        transforms.RandomAffine(degrees=0, translate=tuple(config["translate"])),
+        transforms.ColorJitter(contrast=config["contrast"]),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
         transforms.ToDtype(torch.float32),
-        transforms.Normalize(mean=(127.5, 127.5, 127.5), std=(127.5, 127.5, 127.5)) # Normalizar a [-1, 1]
+        transforms.Normalize(mean=processor.image_mean, std=processor.image_std)
     ])
+
+    test_tf = transforms.Compose([
+        MorphologicalOpeningTransform(tuple(config["morph_kernel_size"])),
+        transforms.CenterCrop(size=(config["img_height"], config["img_width"])),
+        transforms.ToDtype(torch.float32),
+        transforms.Normalize(mean=processor.image_mean, std=processor.image_std)
+    ])
+    return train_tf, test_tf

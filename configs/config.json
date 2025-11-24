@@ -1,46 +1,15 @@
 {
-  "dataset": {
-    "DATASET_NAME": "matthieulel/galaxy10_decals",
-    "TEST_SIZE": 0.2,
-    "RANDOM_STATE": 42,
-    "NUM_CLASSES": 10
-  },
-  "model": {
-    "MODEL_NAME": "google/vit-base-patch16-224-in21k",
-    "PRETRAINED": true,
-    "IMG_HEIGHT": 224,
-    "IMG_WIDTH": 224
-  },
-  "training": {
-    "BATCH_SIZE": 32,
-    "EPOCHS": 50,
-    "LEARNING_RATE": 0.001,
-    "WEIGHT_DECAY": 0.0001,
-    "GRADIENT_ACCUMULATION_STEPS": 1
-  },
-  "early_stopping": {
-    "EARLY_STOPPING_PATIENCE": 10,
-    "EARLY_STOPPING_MIN_DELTA": 0.01
-  },
-  "amp_optimization": {
-    "USE_AMP": true,
-    "AMP_DTYPE": "bfloat16",
-    "GRADIENT_CLIP_VALUE": 1.0
-  },
-  "augmentation": {
-    "MORPH_KERNEL_SIZE": [7, 7],
-    "ROTATION_DEGREES": 180,
-    "TRANSLATE": [0.1, 0.1],
-    "CONTRAST": 0.2
-  },
-  "checkpointing": {
-    "CHECKPOINT_DIR": "/Workspace/checkpoints",
-    "SAVE_EVERY_N_STEPS": 100
-  },
-  "mlflow": {
-    "EXPERIMENT_NAME": "/Shared/galaxy10_vit_classification"
-  },
-  "device": {
-    "DEVICE": "cuda"
-  }
+  "checkpoint": "facebook/deit-small-patch16-224",
+  "batch_size": 16,
+  "epochs": 5,
+  "learning_rate": 5e-5,
+  "mlflow_experiment": "/Shared/galaxy10_vit",
+  "output_dir": "runs/galaxy10",
+
+  "morph_kernel_size": [7, 7],
+  "rotation_degrees": 180,
+  "img_height": 224,
+  "img_width": 224,
+  "translate": [0.1, 0.1],
+  "contrast": 0.2
 }
