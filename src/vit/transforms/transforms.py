@@ -16,7 +16,7 @@ class MorphologicalOpeningTransform(nn.Module):
     
     def forward(self, img):
         # Asegurar que es numpy
-        np_img = img if isinstance(img, np.ndarray) else img.numpy()
+        np_img = img if isinstance(img, np.ndarray) else np.array(img)
         
         # Aplicar morfología a cada canal
         morphs = []
