@@ -32,7 +32,7 @@ def create_trainer(model, train_ds, test_ds, config):
 
     training_args = TrainingArguments(
         output_dir=config["output_dir"],
-        eval_strategy="epoch",
+        evaluation_strategy="epoch",
         save_strategy="epoch",
         logging_strategy="epoch",
         learning_rate=config["learning_rate"],
