@@ -1,6 +1,6 @@
 from transformers import AutoModelForImageClassification
 
-def get_model(checkpoint: str, num_labels: int):
+def get_model(checkpoint: str):
     """
     Permite cargar cualquier modelo de Huggingface para clasificación de imágenes.
     Ejemplos:
@@ -11,7 +11,7 @@ def get_model(checkpoint: str, num_labels: int):
     """
     model = AutoModelForImageClassification.from_pretrained(
         checkpoint,
-        num_labels=num_labels,
+        num_labels=10,
         ignore_mismatched_sizes=True,
     )
     return model

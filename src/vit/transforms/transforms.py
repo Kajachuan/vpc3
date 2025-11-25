@@ -29,10 +29,10 @@ class MorphologicalOpeningTransform(nn.Module):
         
         return torch.stack(morphs)
 
-def get_transforms(checkpoint: str, config: dict):
+def get_transforms(config: dict):
     """Obtener composición de transformaciones"""
 
-    processor = AutoImageProcessor.from_pretrained(checkpoint)
+    processor = AutoImageProcessor.from_pretrained(config["checkpoint"])
     
     train_tf = transforms.Compose([
         MorphologicalOpeningTransform(tuple(config["morph_kernel_size"])),
