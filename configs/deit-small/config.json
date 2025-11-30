@@ -1,10 +1,11 @@
 {
   "checkpoint": "facebook/deit-small-patch16-224",
   "batch_size": 16,
-  "epochs": 5,
+  "epochs": 20,
   "learning_rate": 5e-5,
-  "mlflow_experiment": "/Shared/galaxy10_vit",
-  "output_dir": "runs/galaxy10",
+  "mlflow_experiment": "/Shared/facebook-deit-small-patch16-224",
+  "output_dir": "/Workspace/Users/kevincajachuan@gmail.com/vpc3/checkpoints/facebook-deit-small-patch16-224",
+  "early_stopping_patience": 3,
 
   "morph_kernel_size": [7, 7],
   "rotation_degrees": 180,

@@ -1,0 +1,16 @@
+{
+  "checkpoint": "microsoft/swin-tiny-patch4-window7-224",
+  "batch_size": 16,
+  "epochs": 20,
+  "learning_rate": 3e-5,
+  "mlflow_experiment": "/Shared/microsoft-swin-tiny-patch4-window7-224",
+  "output_dir": "/Workspace/Users/kevincajachuan@gmail.com/vpc3/checkpoints/microsoft-swin-tiny-patch4-window7-224",
+  "early_stopping_patience": 3,
+
+  "morph_kernel_size": [7, 7],
+  "rotation_degrees": 180,
+  "img_height": 224,
+  "img_width": 224,
+  "translate": [0.1, 0.1],
+  "contrast": 0.2
+}

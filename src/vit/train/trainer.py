@@ -1,8 +1,8 @@
 import numpy as np
 import mlflow
 
-from transformers import TrainingArguments, Trainer
-from src.vit.metrics.metrics import compute_metrics, log_confusion_matrix
+from transformers import TrainingArguments, Trainer, EarlyStoppingCallback
+from src.vit.metrics import compute_metrics, log_confusion_matrix
 
 class MLflowTrainer(Trainer):
     """
@@ -23,7 +23,7 @@ class MLflowTrainer(Trainer):
 
         # confusion matrix
         class_names = list(range(output.predictions.shape[1]))
-        log_confusion_matrix(labels, preds, class_names, self.args.output_dir)
+        log_confusion_matrix(labels, preds, class_names)
 
         return output
 
@@ -41,6 +41,8 @@ def create_trainer(model, train_ds, test_ds, config):
         num_train_epochs=config["epochs"],
         fp16=True,
         report_to=["mlflow"],
+        save_total_limit=1,
+        load_best_model_at_end=True,
     )
 
     trainer = MLflowTrainer(
@@ -49,6 +51,7 @@ def create_trainer(model, train_ds, test_ds, config):
         train_dataset=train_ds,
         eval_dataset=test_ds,
         compute_metrics=compute_metrics,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=config["early_stopping_patience"])],
     )
 
     return trainer
