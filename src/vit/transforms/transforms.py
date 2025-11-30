@@ -29,7 +29,7 @@ def get_transforms(config: dict):
     """Obtener composición de transformaciones"""
 
     processor = AutoImageProcessor.from_pretrained(config["checkpoint"])
-    
+
     train_tf = transforms.Compose([
         MorphologicalOpeningTransform(tuple(config["morph_kernel_size"])),
         transforms.RandomRotation(degrees=config["rotation_degrees"]),
@@ -39,13 +39,22 @@ def get_transforms(config: dict):
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize(mean=processor.image_mean, std=processor.image_std)
     ])
 
     test_tf = transforms.Compose([
         MorphologicalOpeningTransform(tuple(config["morph_kernel_size"])),
         transforms.CenterCrop(size=(config["img_height"], config["img_width"])),
         transforms.ToTensor(),
-        transforms.Normalize(mean=processor.image_mean, std=processor.image_std)
     ])
+
+    if "mobilevit" not in config["checkpoint"]:
+        train_tf = transforms.Compose([
+            train_tf,
+            transforms.Normalize(mean=processor.image_mean, std=processor.image_std)
+        ])
+        test_tf = transforms.Compose([
+            test_tf,
+            transforms.Normalize(mean=processor.image_mean, std=processor.image_std)
+        ])
+
     return train_tf, test_tf
